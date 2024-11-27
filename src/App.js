@@ -15,6 +15,9 @@ import { ColorModeContext, useMode } from "./theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import Dashboard from "./components/page/dashboard/Dashboard";
 import SideBar from "./components/page/SideBar";
+import GraficaRegistros from "./components/graficas/Grafica";
+import {AuthProvider} from "./auth/AuthContext";
+import Login from "./components/Login/Login";
 
 
 
@@ -29,19 +32,24 @@ function App() {
               <div className="App">
                   <SideBar isSidebar={isSidebar} />
                   <main className="content">
+                      {/*<Login></Login>*/}
                       <TopBar setIsSidebar={setIsSidebar} />
-                      <Routes>
-                          <Route path="/" element={<Dashboard />} />
-                          <Route path="/componentes" element={<MostrarComponentes/>}/>
-                          <Route path="/agregarComponente" element={<AgregarComponente/>}/>
-                          <Route path="/modificarComponente/:id" element={<ModificarComponente/>}/>
-                          <Route path="/tejedores" element={<MostrarTejedores/>}/>
-                          <Route path="/agregarTejedor" element={<AgregarTejedor/>}/>
-                          <Route path="/modificarTejedor/:id" element={<ModificarTejedor/>}/>
-                          <Route path="/registros" element={<MostrarRegistros/>}/>
-                          <Route path="/agregarRegistro" element={<AgregarRegistro/>}/>
-                          <Route path="/modificarRegistro/:id" element={<ModificarRegistro/>}/>
-                      </Routes>
+                      {/*<AuthProvider>*/}
+                          <Routes>
+                              <Route path="/" element={<Dashboard />} />
+                              <Route path="/componentes" element={<MostrarComponentes/>}/>
+                              <Route path="/agregarComponente" element={<AgregarComponente/>}/>
+                              <Route path="/modificarComponente/:id" element={<ModificarComponente/>}/>
+                              <Route path="/tejedores" element={<MostrarTejedores/>}/>
+                              <Route path="/agregarTejedor" element={<AgregarTejedor/>}/>
+                              <Route path="/modificarTejedor/:id" element={<ModificarTejedor/>}/>
+                              <Route path="/registros" element={<MostrarRegistros/>}/>
+                              <Route path="/agregarRegistro" element={<AgregarRegistro/>}/>
+                              <Route path="/modificarRegistro/:id" element={<ModificarRegistro/>}/>
+                              <Route path="/graficaRegistros/" element={<GraficaRegistros/>}/>
+                              <Route path="/login" element={<Login></Login>}></Route>
+                          </Routes>
+                      {/*</AuthProvider>*/}
                   </main>
               </div>
           </ThemeProvider>

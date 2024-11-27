@@ -1,22 +1,24 @@
-import React,{ useEffect } from "react";
+import React,{ useState ,useEffect } from "react";
 import { Link } from "react-router-dom";
 import $ from "jquery";
-export const Login = () => {
 
-    useEffect(() => {
-        $("#LoginForm").submit(function (e) {
-            e.preventDefault();
-            $.ajax({
-                url:'login',
-                type:"POST",
-                data: $(this).serialize(),
-                success:function(response){
-                    //window.location.reload();
-                },
-            })
-            console.log("login form submitted");
-        })
-    }, []);
+import { useNavigate } from "react-router-dom";
+    
+    const Login = () => {
+      const [usuario, setUsuario] = useState("");
+      const [clave, setClave] = useState("");
+      const navigate = useNavigate();
+    
+      const handleLogin = (e) => {
+        e.preventDefault();
+        // Aquí podrías hacer una petición a tu backend para autenticar al usuario
+        if (usuario === "admin" && clave === "password") {
+          alert("Login exitoso");
+          navigate("/crud1"); // Redirige a la primera sección de CRUD
+        } else {
+          alert("Credenciales incorrectas");
+        }
+      };
     return (
       <>
         <div className="container">
