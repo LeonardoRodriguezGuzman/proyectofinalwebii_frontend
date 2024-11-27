@@ -1,60 +1,236 @@
-import React,{useState} from 'react';
-import axios from 'axios';
-import {useNavigate} from "react-router-dom";
+import React from "react";
+import { Box, Button, TextField } from "@mui/material";
+import { Formik } from "formik";
+import * as yup from "yup";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import Header from "../../components/Header";
 
-const endPoint = 'http://localhost:8000/api/registro';
+const endPoint = "http://localhost:8000/api/registro";
+
 const AgregarRegistro = () => {
-    const [fecha, setFecha] = useState()
-    const [odp, setOdp] = useState(0)
-    const [idComponente, setIdComponente] = useState(0)
-    const [color, setColor] = useState('')
-    const [turno, setTurno] = useState(0)
-    const [idTejedor, setIdTejedor] = useState(0)
-    const [maquina, setMaquina] = useState(0)
-    const [semana, setSemana] = useState(0)
-    const [produccionReal, setProduccionReal] = useState(0)
-    const navigate = useNavigate()
-    const store = async(e) => {
-        e.preventDefault()
-        await axios.post(endPoint, {fecha, odp, idComponente, color, turno, idTejedor, maquina, semana, produccionReal})
-        navigate('/registros')
-    }
+    const navigate = useNavigate();
+
+    // Función para manejar el envío del formulario
+    const handleFormSubmit = async (values) => {
+        try {
+            await axios.post(endPoint, values);
+            navigate("/registros"); // Redirige a la lista de registros
+        } catch (error) {
+            console.error("Error al agregar el registro:", error);
+        }
+    };
+
     return (
-        <div>
-            <h3>Agregar Registro</h3>
-            <form onSubmit={store}>
-                <div className="mb-3">
-                    <label className="form-label">Fecha</label>
-                    <input type="date" className="form-control" value={fecha}
-                           onChange={(e) => setFecha(e.target.value)}/>
-                    <label className="form-label">odp</label>
-                    <input type="text" className="form-control" value={odp} onChange={(e) => setOdp(e.target.value)}/>
-                    <label className="form-label">Componente</label>
-                    <input type="number" className="form-control" value={idComponente}
-                           onChange={(e) => setIdComponente(e.target.value)}/>
-                    <label className="form-label">Color</label>
-                    <input type="text" className="form-control" value={color}
-                           onChange={(e) => setColor(e.target.value)}/>
-                    <label className="form-label">turno</label>
-                    <input type="number" className="form-control" value={turno}
-                           onChange={(e) => setTurno(e.target.value)}/>
-                    <label className="form-label">idTejedor</label>
-                    <input type="number" className="form-control" value={idTejedor}
-                           onChange={(e) => setIdTejedor(e.target.value)}/>
-                    <label className="form-label">Maquina</label>
-                    <input type="number" className="form-control" value={maquina}
-                           onChange={(e) => setMaquina(e.target.value)}/>
-                    <label className="form-label">Semana</label>
-                    <input type="number" className="form-control" value={semana}
-                           onChange={(e) => setSemana(e.target.value)}/>
-                    <label className="form-label">Produccion Real</label>
-                    <input type="number" className="form-control" value={produccionReal}
-                           onChange={(e) => setProduccionReal(e.target.value)}/>
-                </div>
-                <button type="submit" className="btn btn-primary">Agregar</button>
-            </form>
-        </div>
+        <Box m="20px">
+            <Header
+                title="Agregar Registro"
+                subtitle="Crea un nuevo registro de producción"
+            />
+
+            <Formik
+                onSubmit={handleFormSubmit}
+                initialValues={initialValues}
+                validationSchema={registroSchema}
+            >
+                {({
+                      values,
+                      errors,
+                      touched,
+                      handleBlur,
+                      handleChange,
+                      handleSubmit,
+                  }) => (
+                    <form onSubmit={handleSubmit}>
+                        <Box
+                            display="grid"
+                            gap="30px"
+                            gridTemplateColumns="repeat(4, minmax(0, 1fr))"
+                            sx={{
+                                "& > div": { gridColumn: "span 4" },
+                            }}
+                        >
+                            <TextField
+                                fullWidth
+                                variant="filled"
+                                type="date"
+                                label="Fecha"
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                value={values.fecha}
+                                name="fecha"
+                                error={!!touched.fecha && !!errors.fecha}
+                                helperText={touched.fecha && errors.fecha}
+                                sx={{ gridColumn: "span 2" }}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
+                            <TextField
+                                fullWidth
+                                variant="filled"
+                                type="text"
+                                label="Orden de Producción"
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                value={values.odp}
+                                name="odp"
+                                error={!!touched.odp && !!errors.odp}
+                                helperText={touched.odp && errors.odp}
+                                sx={{ gridColumn: "span 2" }}
+                            />
+                            <TextField
+                                fullWidth
+                                variant="filled"
+                                type="number"
+                                label="ID Componente"
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                value={values.idComponente}
+                                name="idComponente"
+                                error={
+                                    !!touched.idComponente &&
+                                    !!errors.idComponente
+                                }
+                                helperText={
+                                    touched.idComponente &&
+                                    errors.idComponente
+                                }
+                                sx={{ gridColumn: "span 2" }}
+                            />
+                            <TextField
+                                fullWidth
+                                variant="filled"
+                                type="text"
+                                label="Color"
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                value={values.color}
+                                name="color"
+                                error={!!touched.color && !!errors.color}
+                                helperText={touched.color && errors.color}
+                                sx={{ gridColumn: "span 2" }}
+                            />
+                            <TextField
+                                fullWidth
+                                variant="filled"
+                                type="text"
+                                label="Turno"
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                value={values.turno}
+                                name="turno"
+                                error={!!touched.turno && !!errors.turno}
+                                helperText={touched.turno && errors.turno}
+                                sx={{ gridColumn: "span 2" }}
+                            />
+                            <TextField
+                                fullWidth
+                                variant="filled"
+                                type="number"
+                                label="ID Tejedor"
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                value={values.idTejedor}
+                                name="idTejedor"
+                                error={!!touched.idTejedor && !!errors.idTejedor}
+                                helperText={touched.idTejedor && errors.idTejedor}
+                                sx={{ gridColumn: "span 2" }}
+                            />
+                            <TextField
+                                fullWidth
+                                variant="filled"
+                                type="text"
+                                label="Máquina"
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                value={values.maquina}
+                                name="maquina"
+                                error={!!touched.maquina && !!errors.maquina}
+                                helperText={touched.maquina && errors.maquina}
+                                sx={{ gridColumn: "span 2" }}
+                            />
+                            <TextField
+                                fullWidth
+                                variant="filled"
+                                type="number"
+                                label="Semana"
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                value={values.semana}
+                                name="semana"
+                                error={!!touched.semana && !!errors.semana}
+                                helperText={touched.semana && errors.semana}
+                                sx={{ gridColumn: "span 2" }}
+                            />
+                            <TextField
+                                fullWidth
+                                variant="filled"
+                                type="number"
+                                label="Producción Real"
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                value={values.produccionReal}
+                                name="produccionReal"
+                                error={
+                                    !!touched.produccionReal &&
+                                    !!errors.produccionReal
+                                }
+                                helperText={
+                                    touched.produccionReal &&
+                                    errors.produccionReal
+                                }
+                                sx={{ gridColumn: "span 2" }}
+                            />
+                        </Box>
+                        <Box display="flex" justifyContent="end" mt="20px">
+                            <Button type="submit" color="secondary" variant="contained">
+                                Agregar Registro
+                            </Button>
+                        </Box>
+                    </form>
+                )}
+            </Formik>
+        </Box>
     );
-}
+};
+
+// Esquema de validación con Yup
+const registroSchema = yup.object().shape({
+    fecha: yup.date().required("La fecha es requerida"),
+    odp: yup.string().required("La orden de producción es requerida"),
+    idComponente: yup
+        .number()
+        .typeError("El ID del componente debe ser un número")
+        .required("El ID del componente es requerido"),
+    color: yup.string().required("El color es requerido"),
+    turno: yup.string().required("El turno es requerido"),
+    idTejedor: yup
+        .number()
+        .typeError("El ID del tejedor debe ser un número")
+        .required("El ID del tejedor es requerido"),
+    maquina: yup.string().required("La máquina es requerida"),
+    semana: yup
+        .number()
+        .typeError("La semana debe ser un número")
+        .required("La semana es requerida"),
+    produccionReal: yup
+        .number()
+        .typeError("La producción real debe ser un número")
+        .required("La producción real es requerida"),
+});
+
+// Valores iniciales
+const initialValues = {
+    fecha: "",
+    odp: "",
+    idComponente: "",
+    color: "",
+    turno: "",
+    idTejedor: "",
+    maquina: "",
+    semana: "",
+    produccionReal: "",
+};
 
 export default AgregarRegistro;
