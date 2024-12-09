@@ -20,11 +20,10 @@ const ModificarRegistro = () => {
         turno: "",
         idTejedor: "",
         maquina: "",
-        semana: "",
+        jornada: "",
         produccionReal: "",
     });
 
-    // Cargar los valores iniciales del registro
     useEffect(() => {
         const getRegistroById = async () => {
             try {
@@ -37,7 +36,7 @@ const ModificarRegistro = () => {
                     turno,
                     idTejedor,
                     maquina,
-                    semana,
+                    jornada,
                     produccionReal,
                 } = response.data;
                 setInitialValues({
@@ -48,7 +47,7 @@ const ModificarRegistro = () => {
                     turno,
                     idTejedor,
                     maquina,
-                    semana,
+                    jornada,
                     produccionReal,
                 });
             } catch (error) {
@@ -58,7 +57,6 @@ const ModificarRegistro = () => {
         getRegistroById();
     }, [id]);
 
-    // Manejo de la actualización
     const handleFormSubmit = async (values) => {
         try {
             await axios.put(`${endpoint}/${id}`, values);
@@ -191,13 +189,13 @@ const ModificarRegistro = () => {
                                 fullWidth
                                 variant="filled"
                                 type="number"
-                                label="Semana"
+                                label="Jornada"
                                 onBlur={handleBlur}
                                 onChange={handleChange}
-                                value={values.semana}
-                                name="semana"
-                                error={!!touched.semana && !!errors.semana}
-                                helperText={touched.semana && errors.semana}
+                                value={values.jornada}
+                                name="jornada"
+                                error={!!touched.jornada && !!errors.jornada}
+                                helperText={touched.jornada && errors.jornada}
                                 sx={{ gridColumn: "span 1" }}
                             />
                             <TextField
@@ -226,7 +224,6 @@ const ModificarRegistro = () => {
     );
 };
 
-// Esquema de validación
 const registroSchema = yup.object().shape({
     fecha: yup.date().required("La fecha es requerida"),
     odp: yup.string().required("La ODP es requerida"),
@@ -235,7 +232,7 @@ const registroSchema = yup.object().shape({
     turno: yup.number().required("El turno es requerido"),
     idTejedor: yup.number().required("El ID del tejedor es requerido"),
     maquina: yup.string().required("La máquina es requerida"),
-    semana: yup.number().required("La semana es requerida"),
+    jornada: yup.number().required("La jornada es requerida"),
     produccionReal: yup.number().required("La producción real es requerida"),
 });
 

@@ -9,14 +9,14 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 
+
+
 const endPoint = "http://localhost:8000/api";
 
 const MostrarRegistros = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const [registros, setRegistros] = useState([]);
-
-    // Columnas para la DataGrid
     const columns = [
         { field: "fecha", headerName: "Fecha", flex: 1, minWidth: 150 },
         { field: "odp", headerName: "Orden de Producción", flex: 1, minWidth: 150 },
@@ -25,7 +25,7 @@ const MostrarRegistros = () => {
         { field: "turno", headerName: "Turno", flex: 1, minWidth: 100 },
         { field: "idTejedor", headerName: "Tejedor", flex: 1, minWidth: 150 },
         { field: "maquina", headerName: "Máquina", flex: 1, minWidth: 100 },
-        { field: "semana", headerName: "Semana", flex: 1, minWidth: 100 },
+        { field: "jornada", headerName: "Jornada", flex: 1, minWidth: 100 },
         {
             field: "produccionReal",
             headerName: "Producción Real",
@@ -39,7 +39,6 @@ const MostrarRegistros = () => {
             minWidth: 150,
             renderCell: (params) => (
                 <Box display="flex" justifyContent="space-between" width="100%">
-                    {/* Botón de modificar */}
                     <Link
                         to={`/modificarRegistro/${params.row.idRegistro}`}
                         style={{
@@ -76,7 +75,6 @@ const MostrarRegistros = () => {
         },
     ];
 
-    // Obtener todos los registros
     useEffect(() => {
         getAllRegistros();
     }, []);
@@ -90,11 +88,10 @@ const MostrarRegistros = () => {
         }
     };
 
-    // Eliminar un registro
     const deleteRegistro = async (id) => {
         try {
             await axios.delete(`${endPoint}/registro/${id}`);
-            getAllRegistros(); // Recargar los registros después de eliminar
+            getAllRegistros();
         } catch (error) {
             console.error("Error al eliminar el registro:", error);
         }
@@ -102,12 +99,10 @@ const MostrarRegistros = () => {
 
     return (
         <Box m="20px">
-            {/* Encabezado */}
             <Header
                 title="Registros"
                 subtitle="Gestión de los registros de producción"
             />
-            {/* Botón de agregar */}
             <Box display="flex" justifyContent="flex-end" mb="20px">
                 <Link to="/agregarRegistro" style={{ textDecoration: "none" }}>
                     <Button
@@ -119,7 +114,6 @@ const MostrarRegistros = () => {
                     </Button>
                 </Link>
             </Box>
-            {/* Tabla con DataGrid */}
             <Box
                 m="40px 0 0 0"
                 height="75vh"
@@ -150,9 +144,9 @@ const MostrarRegistros = () => {
                 }}
             >
                 <DataGrid
-                    rows={registros} // Datos obtenidos de la API
+                    rows={registros}
                     columns={columns}
-                    getRowId={(row) => row.idRegistro} // Identificador único
+                    getRowId={(row) => row.idRegistro}
                     checkboxSelection
                     disableSelectionOnClick
                 />

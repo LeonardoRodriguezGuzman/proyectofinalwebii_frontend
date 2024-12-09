@@ -11,7 +11,6 @@ const endPoint = "http://localhost:8000/api/registro";
 const AgregarRegistro = () => {
     const navigate = useNavigate();
 
-    // Función para manejar el envío del formulario
     const handleFormSubmit = async (values) => {
         try {
             await axios.post(endPoint, values);
@@ -154,13 +153,13 @@ const AgregarRegistro = () => {
                                 fullWidth
                                 variant="filled"
                                 type="number"
-                                label="Semana"
+                                label="Jornada"
                                 onBlur={handleBlur}
                                 onChange={handleChange}
-                                value={values.semana}
-                                name="semana"
-                                error={!!touched.semana && !!errors.semana}
-                                helperText={touched.semana && errors.semana}
+                                value={values.jornada}
+                                name="jornada"
+                                error={!!touched.jornada && !!errors.jornada}
+                                helperText={touched.jornada && errors.jornada}
                                 sx={{ gridColumn: "span 2" }}
                             />
                             <TextField
@@ -210,10 +209,10 @@ const registroSchema = yup.object().shape({
         .typeError("El ID del tejedor debe ser un número")
         .required("El ID del tejedor es requerido"),
     maquina: yup.string().required("La máquina es requerida"),
-    semana: yup
+    jornada: yup
         .number()
-        .typeError("La semana debe ser un número")
-        .required("La semana es requerida"),
+        .typeError("La jornada debe ser un número")
+        .required("La jornada es requerida"),
     produccionReal: yup
         .number()
         .typeError("La producción real debe ser un número")
@@ -229,7 +228,7 @@ const initialValues = {
     turno: "",
     idTejedor: "",
     maquina: "",
-    semana: "",
+    jornada: "",
     produccionReal: "",
 };
 
